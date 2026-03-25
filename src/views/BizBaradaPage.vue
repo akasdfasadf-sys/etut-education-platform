@@ -8,14 +8,16 @@
         <h1>Biz Barada</h1>
         <div class="about-divider"></div>
         <p>
-          ETUT.EDU.TM uniwersitet bilim platformasy bolup, talyplaryna programmalary öwrenmäge,
-          uniwersitetleri deňeşdirmäge we arzadan okuwa kabul edilýänçä aýdyň ýol meýilleşdirmäge
-          kömek edýär. Biz programma maglumatlaryny, kabul ediş talaplaryny, möhletleri we
-          maliýe kömegi gollanmasyny bir amatly tejribä jemleýäris. Esasy ugur saýlaýarsyňyzmy,
-          resminamalary taýýarlaýarsyňyzmy ýa-da arzaňyzyň ýagdaýyny yzarlaýarsyňyzmy —
-          gurallarmyz sizi tertipli we ynamly saklaýar. Uniwersitetler hem takyk sanawlary
-          paýlaşyp, täzelikleri netijeli habar berip bilýärler. Biziň missiýamyz ýönekeý:
-          ýokary bilimi has elýeterli, aç-açan we her bir öwreniji üçin gazanylýan etmekdir.
+          ETUT.EDU.TM — Oguz han Engineering and Technology University of Turkmenistan
+          tarapyndan hödürlenýän döwrebap sanly bilim platformasydyr. Biziň esasy maksadymyz,
+          talyplaryň okuw materiallaryna islendik wagtda we islendik ýerden aňsatlyk bilen
+          elýeterliligini üpjün etmekdir.
+        </p>
+        <p>
+          Platformamyzda her bir talyp öz fakultetine we dersine degişli iň täze okuw
+          gollanmalaryny, PDF materiallaryny tapyp biler we öz bilimini testler arkaly
+          barlap biler. Biz bilimiň sanlylaşmagy arkaly geljegiň hünärmenleriniň
+          taýýarlanmagyna goşant goşýarys.
         </p>
       </div>
     </section>
@@ -79,6 +81,14 @@ export default {
   color: rgba(255, 255, 255, 0.9);
   font-size: 1rem;
   line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.about-date {
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.55);
+  font-style: italic;
 }
 
 @media (max-width: 768px) {

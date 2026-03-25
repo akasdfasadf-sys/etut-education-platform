@@ -11,13 +11,14 @@ export const auth = reactive({
   user: JSON.parse(localStorage.getItem('auth_user') || 'null'),
 
   login(username, password) {
-    const found = USERS.find(
-      u => u.username === username && u.password === password
-    )
-    if (!found) {
-      return { success: false, error: 'Ulanyjy ady ýa-da açar söz ýalňyş!' }
+    const userExists = USERS.find(u => u.username === username)
+    if (!userExists) {
+      return { success: false, error: 'Bu ulanyjy ady ulgamda ýok!' }
     }
-    this.user = { username: found.username, name: found.name }
+    if (userExists.password !== password) {
+      return { success: false, error: 'Açar söz ýalňyş!' }
+    }
+    this.user = { username: userExists.username, name: userExists.name }
     localStorage.setItem('auth_user', JSON.stringify(this.user))
     return { success: true }
   },

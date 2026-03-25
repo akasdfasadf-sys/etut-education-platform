@@ -11,22 +11,40 @@
     </section>
 
     <div class="page-container">
-      <div class="filter-section">
-        <input v-model="searchQuery" type="text" placeholder="Ders gözle..." class="search-input" />
-        <select v-model="selectedCategory" class="category-select">
-          <option value="hemmesi">Ähli kategoriýalar</option>
-          <option value="matematika">Matematika</option>
-          <option value="ykdysadyýet">Ykdysadyýet</option>
-          <option value="biznes">Biznes</option>
-          <option value="diller">Diller</option>
-          <option value="informatika">Informatika</option>
-          <option value="sport">Sport</option>
-          <option value="ylym">Ylym</option>
-          <option value="inženerçilik">Inženerçilik</option>
-        </select>
+
+      <!-- Fakultet saýlamak -->
+      <div class="selector-section">
+        <div class="fakultet-tabs">
+          <button
+            v-for="f in fakultetler"
+            :key="f.id"
+            :class="['fak-btn', { active: selectedFakultet === f.id }]"
+            @click="selectFakultet(f.id)"
+          >
+            <span class="fak-icon">{{ f.icon }}</span>
+            <span class="fak-name">{{ f.name }}</span>
+          </button>
+        </div>
+
+        <!-- Kurs saýlamak -->
+        <div class="kurs-tabs" v-if="selectedFakultet">
+          <button
+            v-for="k in kurslar"
+            :key="k"
+            :class="['kurs-btn', { active: selectedKurs === k }]"
+            @click="selectedKurs = k"
+          >
+            {{ k }}-nji kurs
+          </button>
+        </div>
       </div>
 
-      <div class="subjects-grid">
+      <!-- Gözleg we süzgüç -->
+      <div class="filter-section" v-if="selectedFakultet && selectedKurs">
+        <input v-model="searchQuery" type="text" placeholder="Ders gözle..." class="search-input" />
+      </div>
+
+      <div class="subjects-grid" v-if="selectedFakultet && selectedKurs">
         <div v-for="subject in filteredSubjects" :key="subject.id" class="subject-card" @click="goToSubject(subject.id)">
           <div class="subject-icon">{{ subject.icon }}</div>
           <h3>{{ subject.name }}</h3>
@@ -38,13 +56,19 @@
           </div>
           <button class="start-btn">Başla</button>
         </div>
+        <div v-if="filteredSubjects.length === 0" class="no-results">
+          <p>Bu kurs üçin ders tapylmady</p>
+        </div>
       </div>
 
-      <div v-if="filteredSubjects.length === 0" class="no-results">
-        <p>Hiç hili netije tapylmady</p>
+      <div v-if="!selectedFakultet" class="select-prompt">
+        <p>Dowam etmek üçin fakultet saýlaň</p>
       </div>
+      <div v-else-if="!selectedKurs" class="select-prompt">
+        <p>Dowam etmek üçin kurs saýlaň</p>
+      </div>
+
     </div>
-
   </div>
 </template>
 
@@ -54,35 +78,48 @@ export default {
   data() {
     return {
       searchQuery: '',
-      selectedCategory: 'hemmesi',
+      selectedFakultet: null,
+      selectedKurs: null,
+      fakultetler: [
+        { id: 1, name: 'Kiberfizika', icon: '🤖' },
+        { id: 2, name: 'Innowasiýa Ykdysadyýeti', icon: '💡' },
+        { id: 3, name: 'Kompyuter Tehnologiýalary', icon: '💻' },
+        { id: 4, name: 'Himiýa we Nano', icon: '🧪' },
+        { id: 5, name: 'Biotehnologiýa', icon: '🧬' }
+      ],
+      kurslar: [1, 2, 3, 4],
       subjects: [
-        { id: 1, name: 'Fundamental of Marketing', category: 'biznes', icon: '📊', description: 'Marketing esaslary we strategiýalary', lessonCount: 28, difficulty: 'orta' },
-        { id: 2, name: 'Economics of Enterprise', category: 'ykdysadyýet', icon: '🏢', description: 'Kärhana ykdysadyýeti we dolandyryş', lessonCount: 32, difficulty: 'kyn' },
-        { id: 3, name: 'Physical Education', category: 'sport', icon: '⚽', description: 'Beden terbiýesi we sagdynlyk', lessonCount: 20, difficulty: 'ýeňil' },
-        { id: 4, name: 'Algebra', category: 'matematika', icon: '🔢', description: 'Algebranyň esasy düşünjeleri we deňlemeler', lessonCount: 35, difficulty: 'orta' },
-        { id: 5, name: 'Linear Algebra', category: 'matematika', icon: '📐', description: 'Çyzykly algebra we matrisalar', lessonCount: 30, difficulty: 'kyn' },
-        { id: 6, name: 'Japanese', category: 'diller', icon: '🇯🇵', description: 'Ýapon dili we medeniýeti', lessonCount: 40, difficulty: 'kyn' },
-        { id: 7, name: 'English Profession', category: 'diller', icon: '🇬🇧', description: 'Hünär üçin iňlis dili', lessonCount: 38, difficulty: 'orta' },
-        { id: 8, name: 'Information', category: 'informatika', icon: '💻', description: 'Maglumat tehnologiýalary esaslary', lessonCount: 25, difficulty: 'ýeňil' },
-        { id: 9, name: 'Microeconomics', category: 'ykdysadyýet', icon: '💰', description: 'Mikroykdysadyýet nazaryýeti', lessonCount: 30, difficulty: 'kyn' },
-        { id: 10, name: 'Scientific', category: 'ylym', icon: '🔬', description: 'Ylmy gözleg usullary', lessonCount: 22, difficulty: 'orta' },
-        { id: 11, name: 'Engineering Pedagogic', category: 'inženerçilik', icon: '⚙️', description: 'Inženerçilik pedagogikasy', lessonCount: 26, difficulty: 'kyn' },
-        { id: 12, name: 'Mathematical Modeling', category: 'matematika', icon: '📈', description: 'Matematiki modelirleme we simulýasiýa usullary', lessonCount: 30, difficulty: 'kyn' }
+        { id: 1,  fakultet: 2, kurs: 1, name: 'Fundamental of Marketing',  category: 'Biznes',       icon: '📊', description: 'Marketing esaslary we strategiýalary',              lessonCount: 28, difficulty: 'orta' },
+        { id: 2,  fakultet: 2, kurs: 1, name: 'Economics of Enterprise',    category: 'Ykdysadyýet',  icon: '🏢', description: 'Kärhana ykdysadyýeti we dolandyryş',              lessonCount: 32, difficulty: 'kyn'  },
+        { id: 3,  fakultet: 1, kurs: 1, name: 'Physical Education',         category: 'Sport',        icon: '⚽', description: 'Beden terbiýesi we sagdynlyk',                   lessonCount: 20, difficulty: 'ýeňil'},
+        { id: 4,  fakultet: 3, kurs: 1, name: 'Algebra',                    category: 'Matematika',   icon: '🔢', description: 'Algebranyň esasy düşünjeleri we deňlemeler',      lessonCount: 35, difficulty: 'orta' },
+        { id: 5,  fakultet: 3, kurs: 2, name: 'Linear Algebra',             category: 'Matematika',   icon: '📐', description: 'Çyzykly algebra we matrisalar',                   lessonCount: 30, difficulty: 'kyn'  },
+        { id: 6,  fakultet: 2, kurs: 2, name: 'Japanese',                   category: 'Diller',       icon: '🇯🇵', description: 'Ýapon dili we medeniýeti',                       lessonCount: 40, difficulty: 'kyn'  },
+        { id: 7,  fakultet: 2, kurs: 1, name: 'English Profession',         category: 'Diller',       icon: '🇬🇧', description: 'Hünär üçin iňlis dili',                          lessonCount: 38, difficulty: 'orta' },
+        { id: 8,  fakultet: 3, kurs: 1, name: 'Information',                category: 'Informatika',  icon: '💻', description: 'Maglumat tehnologiýalary esaslary',               lessonCount: 25, difficulty: 'ýeňil'},
+        { id: 9,  fakultet: 2, kurs: 2, name: 'Microeconomics',             category: 'Ykdysadyýet',  icon: '💰', description: 'Mikroykdysadyýet nazaryýeti',                     lessonCount: 30, difficulty: 'kyn'  },
+        { id: 10, fakultet: 1, kurs: 3, name: 'Scientific',                 category: 'Ylym',         icon: '🔬', description: 'Ylmy gözleg usullary',                           lessonCount: 22, difficulty: 'orta' },
+        { id: 11, fakultet: 1, kurs: 2, name: 'Engineering Pedagogic',      category: 'Inženerçilik', icon: '⚙️', description: 'Inženerçilik pedagogikasy',                      lessonCount: 26, difficulty: 'kyn'  },
+        { id: 12, fakultet: 3, kurs: 3, name: 'Mathematical Modeling',      category: 'Matematika',   icon: '📈', description: 'Matematiki modelirleme we simulýasiýa usullary',  lessonCount: 30, difficulty: 'kyn'  }
       ]
     }
   },
   computed: {
     filteredSubjects() {
-      let filtered = this.subjects
-      if (this.selectedCategory !== 'hemmesi') filtered = filtered.filter(s => s.category === this.selectedCategory)
+      let list = this.subjects.filter(s => s.fakultet === this.selectedFakultet && s.kurs === this.selectedKurs)
       if (this.searchQuery) {
         const q = this.searchQuery.toLowerCase()
-        filtered = filtered.filter(s => s.name.toLowerCase().includes(q) || s.description.toLowerCase().includes(q))
+        list = list.filter(s => s.name.toLowerCase().includes(q) || s.description.toLowerCase().includes(q))
       }
-      return filtered
+      return list
     }
   },
   methods: {
+    selectFakultet(id) {
+      this.selectedFakultet = id
+      this.selectedKurs = null
+      this.searchQuery = ''
+    },
     getDifficultyText(d) {
       return { 'ýeňil': '🟢 Ýeňil', 'orta': '🟡 Orta', 'kyn': '🔴 Kyn' }[d] || d
     },
@@ -163,18 +200,82 @@ export default {
   transition: border-color 0.2s;
 }
 
-.category-select {
-  min-width: 200px;
-  padding: 0.8rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 2px;
-  font-size: 0.95rem;
-  font-family: inherit;
-  outline: none;
-  cursor: pointer;
+.search-input:focus { border-color: #1a56db; }
+
+.selector-section {
+  margin-bottom: 2rem;
 }
 
-.search-input:focus, .category-select:focus { border-color: #1a56db; }
+.fakultet-tabs {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.fak-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.2rem;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #555;
+  transition: all 0.2s;
+}
+
+.fak-btn:hover { border-color: #1a56db; color: #1a56db; }
+
+.fak-btn.active {
+  background: #1a1a2e;
+  border-color: #1a1a2e;
+  color: white;
+}
+
+.fak-icon { font-size: 1.1rem; }
+
+.kurs-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 2px;
+  border: 1px solid #eee;
+}
+
+.kurs-btn {
+  padding: 0.45rem 1.1rem;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #555;
+  transition: all 0.2s;
+}
+
+.kurs-btn:hover { border-color: #1a56db; color: #1a56db; }
+
+.kurs-btn.active {
+  background: #1a56db;
+  border-color: #1a56db;
+  color: white;
+}
+
+.select-prompt {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #aaa;
+  font-size: 1rem;
+}
 
 .subjects-grid {
   display: grid;

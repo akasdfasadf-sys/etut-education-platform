@@ -109,12 +109,13 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.45);
 }
 
 .hero-text {
@@ -123,6 +124,7 @@ export default {
   max-width: 480px;
   width: 90%;
   margin-right: 5%;
+  padding: 1rem;
 }
 
 .hero-title {
@@ -132,6 +134,7 @@ export default {
   line-height: 1.3;
   margin: 0;
   text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  word-break: break-word;
 }
 
 /* Shared */
@@ -299,14 +302,31 @@ export default {
   line-height: 1.6;
 }
 
-@media (max-width: 900px) {
-  .press-grid { grid-template-columns: 1fr; }
-  .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
-}
-
 @media (max-width: 768px) {
-  .hero { justify-content: center; }
-  .hero-card { margin: 1rem; max-width: 100%; }
-  .form-row { grid-template-columns: 1fr; }
+  .hero {
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 3rem;
+  }
+  .hero-text {
+    margin-right: 0;
+    width: 92%;
+    text-align: center;
+  }
+  .hero-title {
+    font-size: 1.3rem;
+  }
+  .press-grid { grid-template-columns: 1fr; }
+  .contact-form-row {
+    grid-template-columns: 1fr;
+  }
+  .contact-form-row input {
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+  .contact-bottom {
+    grid-template-columns: 1fr;
+  }
+  .map-container { height: 220px; }
 }
 </style>

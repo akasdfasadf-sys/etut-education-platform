@@ -14,13 +14,13 @@
 
       <ul class="nav-menu" :class="{ active: isMenuOpen }">
         <li class="nav-item">
-          <router-link to="/" @click="closeMenu">Home</router-link>
+          <router-link to="/" @click="closeMenu">Baş Sahypa</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/biz-barada" @click="closeMenu">About</router-link>
+          <router-link to="/biz-barada" @click="closeMenu">Biz Barada</router-link>
         </li>
         <li class="nav-item">
-          <a href="#" @click="closeMenu">Press</a>
+          <a href="#" @click="closeMenu">Täzelikler</a>
         </li>
         <li class="nav-item">
           <router-link to="/temalar" @click="closeMenu">Temalar</router-link>

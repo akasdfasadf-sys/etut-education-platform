@@ -12,18 +12,32 @@
     </section>
 
     <div class="page-container">
-      <div class="test-categories">
-        <button
-          v-for="category in categories"
-          :key="category.id"
-          :class="['category-btn', { active: selectedTestCategory === category.id }]"
-          @click="selectedTestCategory = category.id"
-        >
-          {{ category.icon }} {{ category.name }}
-        </button>
+      <!-- Fakultet saýlamak -->
+      <div class="selector-section">
+        <div class="fakultet-tabs">
+          <button
+            v-for="f in fakultetler"
+            :key="f.id"
+            :class="['fak-btn', { active: selectedFakultet === f.id }]"
+            @click="selectFakultet(f.id)"
+          >
+            <span class="fak-icon">{{ f.icon }}</span>
+            <span class="fak-name">{{ f.name }}</span>
+          </button>
+        </div>
+        <div class="kurs-tabs" v-if="selectedFakultet">
+          <button
+            v-for="k in kurslar"
+            :key="k"
+            :class="['kurs-btn', { active: selectedKurs === k }]"
+            @click="selectedKurs = k"
+          >
+            {{ k }}-nji kurs
+          </button>
+        </div>
       </div>
 
-      <div class="tests-grid">
+      <div class="tests-grid" v-if="selectedFakultet && selectedKurs">
         <div v-for="test in filteredTests" :key="test.id" class="test-card">
           <div class="test-header">
             <h3>{{ test.title }}</h3>
@@ -45,6 +59,16 @@
             {{ test.status === 'completed' ? 'Täzeden geç' : 'Başla' }}
           </button>
         </div>
+        <div v-if="filteredTests.length === 0" class="no-results">
+          <p>Bu kurs üçin test tapylmady</p>
+        </div>
+      </div>
+
+      <div v-if="!selectedFakultet" class="select-prompt">
+        <p>Dowam etmek üçin fakultet saýlaň</p>
+      </div>
+      <div v-else-if="!selectedKurs" class="select-prompt">
+        <p>Dowam etmek üçin kurs saýlaň</p>
       </div>
     </div>
 
@@ -56,41 +80,42 @@ export default {
   name: 'TestlerPage',
   data() {
     return {
-      selectedTestCategory: 'all',
-      categories: [
-        { id: 'all', name: 'Ählisi', icon: '📚' },
-        { id: 'matematika', name: 'Matematika', icon: '🔢' },
-        { id: 'ykdysadyýet', name: 'Ykdysadyýet', icon: '💰' },
-        { id: 'biznes', name: 'Biznes', icon: '📊' },
-        { id: 'diller', name: 'Diller', icon: '🗣️' },
-        { id: 'informatika', name: 'Informatika', icon: '💻' },
-        { id: 'sport', name: 'Sport', icon: '⚽' },
-        { id: 'ylym', name: 'Ylym', icon: '🔬' },
-        { id: 'inženerçilik', name: 'Inženerçilik', icon: '⚙️' }
+      selectedFakultet: null,
+      selectedKurs: null,
+      fakultetler: [
+        { id: 1, name: 'Kiberfizika', icon: '🤖' },
+        { id: 2, name: 'Innowasiýa Ykdysadyýeti', icon: '💡' },
+        { id: 3, name: 'Kompyuter Tehnologiýalary', icon: '💻' },
+        { id: 4, name: 'Himiýa we Nano', icon: '🧪' },
+        { id: 5, name: 'Biotehnologiýa', icon: '🧬' }
       ],
+      kurslar: [1, 2, 3, 4],
       tests: [
-        { id: 1, title: 'Fundamental of Marketing - Test 1', description: 'Marketing esaslary we strategiýalary', category: 'biznes', questionCount: 25, duration: 35, difficulty: 'Orta', status: 'new', lastScore: null },
-        { id: 2, title: 'Economics of Enterprise', description: 'Kärhana ykdysadyýeti we dolandyryş', category: 'ykdysadyýet', questionCount: 30, duration: 45, difficulty: 'Kyn', status: 'new', lastScore: null },
-        { id: 3, title: 'Physical Education - Sagdynlyk', description: 'Beden terbiýesi we sagdynlyk esaslary', category: 'sport', questionCount: 20, duration: 25, difficulty: 'Ýeňil', status: 'completed', lastScore: 88 },
-        { id: 4, title: 'Algebra - Deňlemeler', description: 'Algebranyň esasy düşünjeleri', category: 'matematika', questionCount: 28, duration: 40, difficulty: 'Orta', status: 'in_progress', lastScore: 72 },
-        { id: 5, title: 'Linear Algebra - Matrisalar', description: 'Çyzykly algebra we matrisalar', category: 'matematika', questionCount: 25, duration: 40, difficulty: 'Kyn', status: 'new', lastScore: null },
-        { id: 6, title: 'Japanese - Hiragana', description: 'Ýapon elipbiýi we esasy sözler', category: 'diller', questionCount: 35, duration: 45, difficulty: 'Kyn', status: 'new', lastScore: null },
-        { id: 7, title: 'English Profession - Business', description: 'Iş üçin iňlis dili', category: 'diller', questionCount: 30, duration: 40, difficulty: 'Orta', status: 'completed', lastScore: 85 },
-        { id: 8, title: 'Information Technology', description: 'Maglumat tehnologiýalary esaslary', category: 'informatika', questionCount: 22, duration: 30, difficulty: 'Ýeňil', status: 'in_progress', lastScore: 78 },
-        { id: 9, title: 'Microeconomics - Bazar', description: 'Mikroykdysadyýet we bazar ykdysadyýeti', category: 'ykdysadyýet', questionCount: 28, duration: 40, difficulty: 'Kyn', status: 'new', lastScore: null },
-        { id: 10, title: 'Scientific Research Methods', description: 'Ylmy gözleg usullary we metodologiýa', category: 'ylym', questionCount: 20, duration: 35, difficulty: 'Orta', status: 'new', lastScore: null },
-        { id: 11, title: 'Engineering Pedagogic', description: 'Inženerçilik pedagogikasy esaslary', category: 'inženerçilik', questionCount: 24, duration: 35, difficulty: 'Kyn', status: 'completed', lastScore: 90 },
-        { id: 12, title: 'Mathematical Modeling', description: 'Matematiki modelirleme we simulýasiýa usullary', category: 'matematika', questionCount: 28, duration: 40, difficulty: 'Kyn', status: 'new', lastScore: null }
+        { id: 1,  fakultet: 2, kurs: 1, title: 'Fundamental of Marketing',    description: 'Marketing esaslary we strategiýalary',             questionCount: 25, duration: 35, difficulty: 'Orta',  status: 'new',         lastScore: null },
+        { id: 2,  fakultet: 2, kurs: 1, title: 'Economics of Enterprise',      description: 'Kärhana ykdysadyýeti we dolandyryş',               questionCount: 30, duration: 45, difficulty: 'Kyn',   status: 'new',         lastScore: null },
+        { id: 3,  fakultet: 1, kurs: 1, title: 'Physical Education',           description: 'Beden terbiýesi we sagdynlyk esaslary',            questionCount: 20, duration: 25, difficulty: 'Ýeňil', status: 'completed',   lastScore: 88   },
+        { id: 4,  fakultet: 3, kurs: 1, title: 'Algebra',                      description: 'Algebranyň esasy düşünjeleri',                     questionCount: 28, duration: 40, difficulty: 'Orta',  status: 'in_progress', lastScore: 72   },
+        { id: 5,  fakultet: 3, kurs: 2, title: 'Linear Algebra',               description: 'Çyzykly algebra we matrisalar',                    questionCount: 25, duration: 40, difficulty: 'Kyn',   status: 'new',         lastScore: null },
+        { id: 6,  fakultet: 2, kurs: 2, title: 'Japanese',                     description: 'Ýapon elipbiýi we esasy sözler',                   questionCount: 35, duration: 45, difficulty: 'Kyn',   status: 'new',         lastScore: null },
+        { id: 7,  fakultet: 2, kurs: 1, title: 'English Profession',           description: 'Iş üçin iňlis dili',                              questionCount: 30, duration: 40, difficulty: 'Orta',  status: 'completed',   lastScore: 85   },
+        { id: 8,  fakultet: 3, kurs: 1, title: 'Information Technology',       description: 'Maglumat tehnologiýalary esaslary',                questionCount: 22, duration: 30, difficulty: 'Ýeňil', status: 'in_progress', lastScore: 78   },
+        { id: 9,  fakultet: 2, kurs: 2, title: 'Microeconomics',               description: 'Mikroykdysadyýet we bazar ykdysadyýeti',           questionCount: 28, duration: 40, difficulty: 'Kyn',   status: 'new',         lastScore: null },
+        { id: 10, fakultet: 1, kurs: 3, title: 'Scientific Research Methods',  description: 'Ylmy gözleg usullary we metodologiýa',             questionCount: 20, duration: 35, difficulty: 'Orta',  status: 'new',         lastScore: null },
+        { id: 11, fakultet: 1, kurs: 2, title: 'Engineering Pedagogic',        description: 'Inženerçilik pedagogikasy esaslary',               questionCount: 24, duration: 35, difficulty: 'Kyn',   status: 'completed',   lastScore: 90   },
+        { id: 12, fakultet: 3, kurs: 3, title: 'Mathematical Modeling',        description: 'Matematiki modelirleme we simulýasiýa usullary',   questionCount: 28, duration: 40, difficulty: 'Kyn',   status: 'new',         lastScore: null }
       ]
     }
   },
   computed: {
     filteredTests() {
-      if (this.selectedTestCategory === 'all') return this.tests
-      return this.tests.filter(t => t.category === this.selectedTestCategory)
+      return this.tests.filter(t => t.fakultet === this.selectedFakultet && t.kurs === this.selectedKurs)
     }
   },
   methods: {
+    selectFakultet(id) {
+      this.selectedFakultet = id
+      this.selectedKurs = null
+    },
     getStatusText(s) {
       return { 'new': 'Täze', 'in_progress': 'Dowam edýär', 'completed': 'Tamamlanan' }[s] || s
     },
@@ -154,33 +179,69 @@ export default {
   padding: 3rem 2rem;
 }
 
-.test-categories {
+.selector-section { margin-bottom: 2rem; }
+
+.fakultet-tabs {
   display: flex;
-  gap: 0.6rem;
-  margin-bottom: 2.5rem;
+  gap: 0.8rem;
   flex-wrap: wrap;
+  margin-bottom: 1rem;
 }
 
-.category-btn {
-  padding: 0.5rem 1.1rem;
+.fak-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.2rem;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #555;
+  transition: all 0.2s;
+}
+
+.fak-btn:hover { border-color: #1a56db; color: #1a56db; }
+.fak-btn.active { background: #1a1a2e; border-color: #1a1a2e; color: white; }
+.fak-icon { font-size: 1.1rem; }
+
+.kurs-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 2px;
+  border: 1px solid #eee;
+}
+
+.kurs-btn {
+  padding: 0.45rem 1.1rem;
   border: 1px solid #ddd;
   background: white;
   border-radius: 2px;
   cursor: pointer;
+  font-family: inherit;
   font-size: 0.88rem;
   font-weight: 600;
-  font-family: inherit;
-  transition: all 0.2s;
   color: #555;
+  transition: all 0.2s;
 }
 
-.category-btn:hover { border-color: #1a56db; color: #1a56db; }
+.kurs-btn:hover { border-color: #1a56db; color: #1a56db; }
+.kurs-btn.active { background: #1a56db; border-color: #1a56db; color: white; }
 
-.category-btn.active {
-  background: #1a1a2e;
-  color: white;
-  border-color: #1a1a2e;
+.select-prompt {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #aaa;
+  font-size: 1rem;
 }
+
+.no-results { text-align: center; padding: 3rem; color: #888; grid-column: 1/-1; }
 
 .tests-grid {
   display: grid;
