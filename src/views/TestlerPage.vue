@@ -26,38 +26,50 @@
           <button
             v-for="k in kurslar" :key="k"
             :class="['kurs-btn', { active: selectedKurs === k }]"
-            @click="selectedKurs = k"
+            @click="selectKurs(k)"
           >
             {{ k }}-nji kurs
           </button>
         </div>
       </div>
 
-      <div class="tests-grid" v-if="selectedFakultet && selectedKurs">
-        <div v-for="test in filteredTests" :key="test.id" class="test-card">
+      <!-- Dersler sanawy -->
+      <div class="tests-grid" v-if="selectedFakultet && selectedKurs && !selectedDers">
+        <div
+          v-for="ders in filteredDersler" :key="ders.id"
+          class="test-card"
+          @click="selectedDers = ders"
+        >
           <div class="test-header">
-            <h3>{{ test.title }}</h3>
-            <span :class="['test-badge', test.status]">{{ getStatusText(test.status) }}</span>
+            <h3>{{ ders.title }}</h3>
+            <span class="test-badge new">📚 {{ ders.topics.length }} tema</span>
           </div>
-          <p class="test-desc">{{ test.description }}</p>
           <div class="test-meta">
-            <span>❓ {{ test.questionCount }} sorag</span>
-            <span>⏱️ {{ test.duration }} min</span>
-            <span v-if="test.difficulty">📊 {{ test.difficulty }}</span>
+            <span>⏱️ {{ ders.duration }} min / tema</span>
           </div>
-          <div v-if="test.lastScore !== null" class="score-block">
-            <div class="score-row">
-              <span>Soňky netije:</span>
-              <strong :class="scoreClass(test.lastScore)">{{ test.lastScore }}%</strong>
-            </div>
-            <div class="progress-bar"><div class="progress-fill" :style="{ width: test.lastScore + '%', background: scoreColor(test.lastScore) }"></div></div>
-          </div>
-          <button class="start-btn" @click="goTest(test.id)">
-            {{ test.status === 'completed' ? '🔄 Täzeden geç' : '▶ Başla' }}
-          </button>
+          <button class="start-btn">▶ Açmak</button>
         </div>
-        <div v-if="filteredTests.length === 0" class="no-results">
+        <div v-if="filteredDersler.length === 0" class="no-results">
           <p>Bu kurs üçin test tapylmady</p>
+        </div>
+      </div>
+
+      <!-- Saýlanan dersiň temalary -->
+      <div v-if="selectedDers" class="topics-section">
+        <div class="topics-header">
+          <button class="back-btn" @click="selectedDers = null">← Yza</button>
+          <h2>{{ selectedDers.title }}</h2>
+        </div>
+        <div class="topics-list">
+          <div v-for="topic in selectedDers.topics" :key="topic.testId" class="topic-row">
+            <div class="topic-info">
+              <span class="topic-num">{{ topic.num }}</span>
+              <span class="topic-name">{{ topic.name }}</span>
+            </div>
+            <button class="topic-test-btn" @click="$router.push(`/test/${topic.testId}`)">
+              📝 Testi geç
+            </button>
+          </div>
         </div>
       </div>
 
@@ -74,6 +86,7 @@ export default {
     return {
       selectedFakultet: null,
       selectedKurs: null,
+      selectedDers: null,
       fakultetler: [
         { id: 1, name: 'Kiberfiziki Ulgamlar Fakulteti', icon: '🤖' },
         { id: 2, name: 'Innowasiýalaryň Ykdysadyýeti Fakulteti', icon: '💡' },
@@ -82,36 +95,47 @@ export default {
         { id: 5, name: 'Biotehnologiýa we Ekologiýa Fakulteti', icon: '🧬' }
       ],
       kurslar: [1, 2, 3, 4],
-      tests: [
-        { id: 12, fakultet: 3, kurs: 3, title: 'Introduction to Mathematical Modeling', description: '', questionCount: 15, duration: 20, difficulty: '', status: 'new', lastScore: null },
-        { id: 13, fakultet: 3, kurs: 3, title: 'Objectives of the Modeling', description: '', questionCount: 15, duration: 20, difficulty: '', status: 'new', lastScore: null },
-        { id: 14, fakultet: 3, kurs: 3, title: 'Formulation of the Problem. Mathematical Formulation', description: '', questionCount: 15, duration: 20, difficulty: '', status: 'new', lastScore: null },
-        { id: 15, fakultet: 3, kurs: 3, title: 'The Stages of Modelling', description: '', questionCount: 15, duration: 20, difficulty: '', status: 'new', lastScore: null },
-        { id: 16, fakultet: 3, kurs: 3, title: 'Basic Concepts of Operations Research', description: '', questionCount: 15, duration: 20, difficulty: '', status: 'new', lastScore: null },
-        { id: 17, fakultet: 3, kurs: 3, title: 'Tools, Techniques and Applications of Operations Research', description: '', questionCount: 15, duration: 20, difficulty: '', status: 'new', lastScore: null },
-        { id: 18, fakultet: 3, kurs: 3, title: 'Introduction to Linear Programming', description: '', questionCount: 15, duration: 20, difficulty: '', status: 'new', lastScore: null },
-        { id: 19, fakultet: 3, kurs: 3, title: 'Linear Programming Problem and Model Formulation', description: '', questionCount: 15, duration: 20, difficulty: '', status: 'new', lastScore: null },
-        { id: 20, fakultet: 3, kurs: 3, title: 'Graphical Solution of Linear Programming Problem', description: '', questionCount: 15, duration: 20, difficulty: '', status: 'new', lastScore: null },
-        { id: 21, fakultet: 3, kurs: 3, title: 'Types of Graphical Solution', description: '', questionCount: 15, duration: 20, difficulty: '', status: 'new', lastScore: null },
-        { id: 22, fakultet: 3, kurs: 3, title: 'Basics of Simplex Method', description: '', questionCount: 15, duration: 20, difficulty: '', status: 'new', lastScore: null },
-        { id: 23, fakultet: 3, kurs: 3, title: 'Simplex Method for Solving Linear Programming Problems', description: '', questionCount: 15, duration: 20, difficulty: '', status: 'new', lastScore: null },
-        { id: 24, fakultet: 3, kurs: 3, title: 'Transportation Problem', description: '', questionCount: 15, duration: 20, difficulty: '', status: 'new', lastScore: null },
-        { id: 25, fakultet: 3, kurs: 3, title: 'Basic Feasible Solution of a Transportation Problem', description: '', questionCount: 15, duration: 20, difficulty: '', status: 'new', lastScore: null },
-        { id: 26, fakultet: 3, kurs: 3, title: 'Modified Distribution Method', description: '', questionCount: 15, duration: 20, difficulty: '', status: 'new', lastScore: null }
+      dersler: [
+        {
+          id: 12, fakultet: 3, kurs: 3,
+          title: 'Mathematical Modeling',
+          duration: 20,
+          topics: [
+            { num: 1,  name: 'Introduction to Mathematical Modeling',                        testId: 12 },
+            { num: 2,  name: 'Objectives of the Modeling',                                   testId: 13 },
+            { num: 3,  name: 'Formulation of the Problem. Mathematical Formulation',         testId: 14 },
+            { num: 4,  name: 'The Stages of Modelling',                                      testId: 15 },
+            { num: 5,  name: 'Basic Concepts of Operations Research',                        testId: 16 },
+            { num: 6,  name: 'Tools, Techniques and Applications of Operations Research',    testId: 17 },
+            { num: 7,  name: 'Introduction to Linear Programming',                           testId: 18 },
+            { num: 8,  name: 'Linear Programming Problem and Model Formulation',             testId: 19 },
+            { num: 9,  name: 'Graphical Solution of Linear Programming Problem',             testId: 20 },
+            { num: 10, name: 'Types of Graphical Solution',                                  testId: 21 },
+            { num: 11, name: 'Basics of Simplex Method',                                     testId: 22 },
+            { num: 12, name: 'Simplex Method for Solving Linear Programming Problems',       testId: 23 },
+            { num: 13, name: 'Transportation Problem',                                       testId: 24 },
+            { num: 14, name: 'Basic Feasible Solution of a Transportation Problem',          testId: 25 },
+            { num: 15, name: 'Modified Distribution Method',                                 testId: 26 }
+          ]
+        }
       ]
     }
   },
   computed: {
-    filteredTests() {
-      return this.tests.filter(t => t.fakultet === this.selectedFakultet && t.kurs === this.selectedKurs)
+    filteredDersler() {
+      return this.dersler.filter(d => d.fakultet === this.selectedFakultet && d.kurs === this.selectedKurs)
     }
   },
   methods: {
-    selectFakultet(id) { this.selectedFakultet = id; this.selectedKurs = null },
-    getStatusText(s) { return { new: 'Täze', in_progress: 'Dowam edýär', completed: 'Tamamlanan' }[s] || s },
-    scoreClass(s) { return s >= 80 ? 'score-good' : s >= 50 ? 'score-mid' : 'score-bad' },
-    scoreColor(s) { return s >= 80 ? '#22c55e' : s >= 50 ? '#f59e0b' : '#ef4444' },
-    goTest(id) { this.$router.push(`/test/${id}`) }
+    selectFakultet(id) {
+      this.selectedFakultet = id
+      this.selectedKurs = null
+      this.selectedDers = null
+    },
+    selectKurs(k) {
+      this.selectedKurs = k
+      this.selectedDers = null
+    }
   }
 }
 </script>
@@ -135,31 +159,43 @@ export default {
 .kurs-btn { padding: 0.45rem 1.1rem; border: 1px solid #ddd; background: white; border-radius: 2px; cursor: pointer; font-family: inherit; font-size: 0.88rem; font-weight: 600; color: #555; transition: all 0.2s; }
 .kurs-btn:hover { border-color: #1a56db; color: #1a56db; }
 .kurs-btn.active { background: #1a56db; border-color: #1a56db; color: white; }
-.tests-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
-.test-card { background: white; padding: 1.8rem; border-radius: 2px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); display: flex; flex-direction: column; border-top: 3px solid #1a56db; transition: transform 0.2s, box-shadow 0.2s; }
+
+/* Ders kartasy */
+.tests-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+.test-card { background: white; padding: 1.8rem; border-radius: 2px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); display: flex; flex-direction: column; border-top: 3px solid #1a56db; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
 .test-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
 .test-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.8rem; }
 .test-header h3 { font-size: 1rem; font-weight: 700; color: #1a1a2e; flex: 1; }
 .test-badge { padding: 0.25rem 0.7rem; border-radius: 2px; font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
 .test-badge.new { background: #e3f2fd; color: #1976d2; }
-.test-badge.in_progress { background: #fff3e0; color: #f57c00; }
-.test-badge.completed { background: #e8f5e9; color: #388e3c; }
-.test-desc { color: #666; font-size: 0.88rem; line-height: 1.6; margin-bottom: 1rem; flex: 1; }
 .test-meta { display: flex; gap: 1rem; font-size: 0.85rem; color: #888; margin-bottom: 1rem; padding: 0.8rem; background: #f9fafb; border-radius: 2px; }
-.score-block { margin-bottom: 1rem; }
-.score-row { display: flex; justify-content: space-between; font-size: 0.88rem; color: #555; margin-bottom: 0.4rem; }
-.score-good { color: #22c55e; }
-.score-mid { color: #f59e0b; }
-.score-bad { color: #ef4444; }
-.progress-bar { height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; }
-.progress-fill { height: 100%; transition: width 0.3s; }
 .start-btn { background: #1a1a2e; color: white; border: none; padding: 0.7rem; border-radius: 2px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top: auto; font-family: inherit; }
 .start-btn:hover { background: #1a56db; }
+
+/* Temalar bölümi */
+.topics-section { background: white; border-radius: 2px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow: hidden; }
+.topics-header { display: flex; align-items: center; gap: 1rem; padding: 1.2rem 1.5rem; border-bottom: 2px solid #1a56db; background: #f9fafb; }
+.topics-header h2 { font-size: 1.1rem; font-weight: 700; color: #1a1a2e; margin: 0; }
+.back-btn { background: white; border: 1px solid #ddd; padding: 0.4rem 1rem; border-radius: 2px; cursor: pointer; font-family: inherit; font-size: 0.88rem; font-weight: 600; color: #555; transition: all 0.2s; white-space: nowrap; }
+.back-btn:hover { background: #1a1a2e; color: white; border-color: #1a1a2e; }
+.topics-list { display: flex; flex-direction: column; }
+.topic-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid #f0f0f0; gap: 1rem; transition: background 0.15s; }
+.topic-row:hover { background: #f5f7ff; }
+.topic-row:last-child { border-bottom: none; }
+.topic-info { display: flex; align-items: center; gap: 0.8rem; flex: 1; }
+.topic-num { width: 28px; height: 28px; background: #1a56db; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 700; flex-shrink: 0; }
+.topic-name { font-size: 0.92rem; font-weight: 600; color: #1a1a2e; }
+.topic-test-btn { background: #1a56db; color: white; border: none; padding: 0.5rem 1.2rem; border-radius: 2px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: background 0.2s; white-space: nowrap; flex-shrink: 0; }
+.topic-test-btn:hover { background: #1d4ed8; }
+
 .select-prompt { text-align: center; padding: 4rem 2rem; color: #aaa; font-size: 1rem; }
 .no-results { text-align: center; padding: 3rem; color: #888; grid-column: 1/-1; }
+
 @media (max-width: 768px) {
   .page-hero { justify-content: center; }
   .page-hero-card { margin: 1rem; max-width: 100%; }
   .tests-grid { grid-template-columns: 1fr; }
+  .topic-row { flex-direction: column; align-items: flex-start; }
+  .topic-test-btn { width: 100%; text-align: center; }
 }
 </style>
