@@ -12,23 +12,6 @@
       </div>
     </section>
 
-    <!-- Press -->
-    <section class="press-section">
-      <h2 class="section-title reveal">PRESS</h2>
-      <div class="section-divider reveal"></div>
-      <div class="press-grid">
-        <div class="press-card reveal" v-for="p in pressItems" :key="p.title">
-          <img :src="p.img" :alt="p.title" />
-          <div class="press-body">
-            <p class="press-date">{{ p.date }}</p>
-            <h3>{{ p.title }}</h3>
-            <p class="press-desc">{{ p.desc }}</p>
-            <button class="btn-read">READ MORE</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Contact -->
     <section class="contact-section">
       <h2 class="section-title reveal">CONTACT</h2>
@@ -44,13 +27,13 @@
       <div class="contact-bottom reveal">
         <div class="map-container">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d95000!2d58.3794!3d37.9601!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f6fffd1e8d5b6b7%3A0x400a01269bf5e30!2sAshgabat%2C%20Turkmenistan!5e0!3m2!1sen!2s!4v1700000000000"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2993.0!2d58.3230!3d37.9340!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f6b0e0e0e0e0e0f%3A0x0!2sAshgabat%2C%20Turkmenistan!5e0!3m2!1sen!2s!4v1700000000001"
             width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
           </iframe>
         </div>
         <div class="contact-info">
           <p class="contact-location">Aşgabat, Türkmenistan</p>
-          <p>📞 +993 12 345678</p>
+          <p>📞 +99364716128</p>
           <p>✉ info@etut.edu.tm</p>
           <p>🕐 Mon-Fri · 08:00–19:00</p>
         </div>
@@ -65,26 +48,6 @@ export default {
   name: 'HomePage',
   data() {
     return {
-      pressItems: [
-        {
-          title: 'First Press Release',
-          date: '2020/05/06',
-          desc: 'Here you can add the short text for your press release. Usually it will be a short text that explains what the press release is all about. It needs to urge the user to click READ MORE to read the rest.',
-          img: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&q=80'
-        },
-        {
-          title: 'Second Press Release',
-          date: '2020/03/03',
-          desc: 'Here you can add the short text for your press release. Usually it will be a short text that explains what the press release is all about. It needs to urge the user to click READ MORE to read the rest.',
-          img: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&q=80'
-        },
-        {
-          title: 'Third Press Release',
-          date: '2020/02/06',
-          desc: 'Here you can add the short text for your press release. Usually it will be a short text that explains what the press release is all about. It needs to urge the user to click READ MORE to read the rest.',
-          img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80'
-        }
-      ]
     }
   }
 }
@@ -153,80 +116,6 @@ export default {
   background: #1a56db;
   margin: 0 auto 3rem;
 }
-
-/* Press */
-.press-section {
-  padding: 5rem 2rem;
-  background: #f9fafb;
-}
-
-.press-grid {
-  max-width: 1100px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-}
-
-.press-card {
-  background: white;
-  border-radius: 2px;
-  overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-}
-
-.press-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-}
-
-.press-body {
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.press-date {
-  font-size: 0.8rem;
-  color: #888;
-  margin-bottom: 0.5rem;
-}
-
-.press-body h3 {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #1a1a2e;
-  margin-bottom: 0.8rem;
-}
-
-.press-desc {
-  font-size: 0.88rem;
-  color: #666;
-  line-height: 1.6;
-  flex: 1;
-  margin-bottom: 1.2rem;
-}
-
-.btn-read {
-  background: #4a8fa8;
-  color: white;
-  border: none;
-  padding: 0.6rem 1.5rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  cursor: pointer;
-  border-radius: 2px;
-  transition: background 0.2s;
-  align-self: center;
-}
-
-.btn-read:hover { background: #3a7a93; }
 
 /* Contact */
 .contact-section {

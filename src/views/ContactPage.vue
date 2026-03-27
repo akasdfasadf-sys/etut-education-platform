@@ -14,13 +14,13 @@
       <div class="contact-bottom">
         <div class="map-container">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d95000!2d58.3794!3d37.9601!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f6fffd1e8d5b6b7%3A0x400a01269bf5e30!2sAshgabat%2C%20Turkmenistan!5e0!3m2!1sen!2s!4v1700000000000"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2993.0!2d58.3230!3d37.9340!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f6b0e0e0e0e0e0f%3A0x0!2sAshgabat%2C%20Turkmenistan!5e0!3m2!1sen!2s!4v1700000000001"
             width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
           </iframe>
         </div>
         <div class="contact-info">
           <p class="info-location">Aşgabat, Türkmenistan</p>
-          <p>📞 +993 12 345678</p>
+          <p>📞 +99364716128</p>
           <p>✉ info@etut.edu.tm</p>
           <p>🕐 Mon-Fri · 08:00–19:00</p>
         </div>

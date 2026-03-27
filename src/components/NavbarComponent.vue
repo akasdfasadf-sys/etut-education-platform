@@ -20,7 +20,7 @@
           <router-link to="/biz-barada" @click="closeMenu">Biz Barada</router-link>
         </li>
         <li class="nav-item">
-          <a href="#" @click="closeMenu">Täzelikler</a>
+          <router-link to="/video-sapaklar" @click="closeMenu">Video Sapaklar</router-link>
         </li>
         <li class="nav-item">
           <router-link to="/temalar" @click="closeMenu">Temalar</router-link>

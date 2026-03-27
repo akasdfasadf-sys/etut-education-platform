@@ -8,22 +8,23 @@
       <div class="footer-links">
         <h4>Baglanyşyklar</h4>
         <ul>
-          <li><router-link to="/">Home</router-link></li>
+          <li><router-link to="/">Baş Sahypa</router-link></li>
           <li><router-link to="/biz-barada">Biz Barada</router-link></li>
+          <li><router-link to="/video-sapaklar">Video Sapaklar</router-link></li>
           <li><router-link to="/temalar">Temalar</router-link></li>
+          <li><router-link to="/fakultetler">Fakultetler</router-link></li>
           <li><router-link to="/testler">Testler</router-link></li>
+          <li><router-link to="/contact">Contact</router-link></li>
         </ul>
       </div>
       <div class="footer-contact">
         <h4>Habarlaşmak</h4>
         <p>Email: info@etut.edu.tm</p>
-        <p>Tel: +993 12 345678</p>
+        <p>Tel: +99364716128</p>
         <p>Aşgabat, Türkmenistan</p>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>Copyright &copy; 2026 ETUT.EDU.TM. Ähli hukuklar goralan.</p>
-    </div>
+
   </footer>
 </template>
 

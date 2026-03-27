@@ -1,37 +1,33 @@
 <template>
   <div class="login-page">
+
+    <!-- Çep: bulutly gradient panel -->
     <div class="login-left">
-      <div class="login-left-content">
+      <div class="login-left-inner">
+        <div class="login-brand-icon">🎓</div>
         <h1>ETUT.EDU.TM</h1>
-        <p>Oguz han Engineering and Technology University of Turkmenistan</p>
-        <div class="login-left-dots">
-          <span></span><span></span><span></span>
-        </div>
+        <p>Bilim platformasyna hoş geldiňiz</p>
+        <span class="login-tagline">Connect effortlessly.</span>
       </div>
     </div>
 
+    <!-- Sag: forma -->
     <div class="login-right">
       <div class="login-card">
-        <div class="login-logo">
-          <img src="/vite.svg" alt="logo" />
-          <span>ETUT.EDU.TM</span>
+        <div class="login-card-logo">
+          <span class="logo-icon">🎓</span>
+          <span class="logo-text">ETUT.EDU.TM</span>
         </div>
+        <p class="login-card-sub">LOGIN</p>
 
-        <h2>Ulgama giriş</h2>
-        <p class="login-sub">Hasabyňyza giriş üçin maglumatlaryňyzy giriziň</p>
+        <h2>Hasabyňyza giriş</h2>
 
         <form @submit.prevent="handleLogin">
           <div class="form-group" :class="{ 'has-error': errors.username }">
             <label>Ulanyjy ady</label>
             <div class="input-wrap">
-              <span class="input-icon">👤</span>
-              <input
-                v-model="username"
-                type="text"
-                placeholder="Ulanyjy adyňyz"
-                autocomplete="username"
-                @input="errors.username = ''"
-              />
+              <svg class="input-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+              <input v-model="username" type="text" placeholder="Ulanyjy adyňyzy giriziň" autocomplete="username" @input="errors.username = ''; generalError = ''" />
             </div>
             <span class="field-error" v-if="errors.username">{{ errors.username }}</span>
           </div>
@@ -39,55 +35,36 @@
           <div class="form-group" :class="{ 'has-error': errors.password }">
             <label>Açar söz</label>
             <div class="input-wrap">
-              <span class="input-icon">🔒</span>
-              <input
-                v-model="password"
-                :type="showPass ? 'text' : 'password'"
-                placeholder="Açar söziňiz"
-                autocomplete="current-password"
-                @input="errors.password = ''"
-              />
-              <button type="button" class="toggle-pass" @click="showPass = !showPass">
-                {{ showPass ? '🙈' : '👁️' }}
-              </button>
+              <svg class="input-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input v-model="password" :type="showPass ? 'text' : 'password'" placeholder="Açar söziňizi giriziň" autocomplete="current-password" @input="errors.password = ''; generalError = ''" />
+              <button type="button" class="show-btn" @click="showPass = !showPass">{{ showPass ? 'Gizle' : 'Görkez' }}</button>
             </div>
             <span class="field-error" v-if="errors.password">{{ errors.password }}</span>
           </div>
 
-          <div v-if="generalError" class="error-banner">
-            <span>⚠️</span> {{ generalError }}
-          </div>
+          <div v-if="generalError" class="error-banner">⚠️ {{ generalError }}</div>
 
           <button type="submit" class="login-btn" :disabled="loading">
             <span v-if="loading" class="spinner"></span>
-            <span v-else>Giriş</span>
+            <span v-else>GIRIŞ</span>
           </button>
         </form>
 
         <div class="login-hint">
-          <p>Synag hasaplary:</p>
-          <code>admin / 1234</code>
-          <code>talip1 / talip123</code>
+          <p>Synag hasaplary: <code>admin / 1234</code> <code>talip1 / talip123</code></p>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
 import { auth } from '../store/auth.js'
-
 export default {
   name: 'LoginPage',
   data() {
-    return {
-      username: '',
-      password: '',
-      errors: { username: '', password: '' },
-      generalError: '',
-      showPass: false,
-      loading: false
-    }
+    return { username: '', password: '', errors: { username: '', password: '' }, generalError: '', showPass: false, loading: false }
   },
   methods: {
     handleLogin() {
@@ -101,12 +78,11 @@ export default {
         if (result.success) {
           this.$router.push('/')
         } else {
-          if (result.error.includes('ulanyjy ady')) {
-            this.errors.username = result.error
-          } else {
-            this.errors.password = result.error
-          }
+          if (result.error.includes('ulanyjy ady')) { this.errors.username = result.error }
+          else { this.errors.password = result.error }
           this.generalError = result.error
+          this.username = ''
+          this.password = ''
         }
         this.loading = false
       }, 600)
@@ -116,65 +92,160 @@ export default {
 </script>
 
 <style scoped>
-.login-page { min-height: 100vh; display: flex; }
+* { box-sizing: border-box; }
 
-.login-left {
-  flex: 1;
-  background: linear-gradient(135deg, #1a1a2e 0%, #1a56db 100%);
+.login-page {
+  min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem;
 }
 
-.login-left-content { color: white; max-width: 380px; }
-.login-left-content h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; }
-.login-left-content p { font-size: 1rem; color: rgba(255,255,255,0.75); line-height: 1.7; }
-.login-left-dots { display: flex; gap: 0.5rem; margin-top: 2rem; }
-.login-left-dots span { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.4); }
-.login-left-dots span:first-child { background: white; }
-
-.login-right {
-  width: 480px;
+/* ---- ÇEPE ---- */
+.login-left {
+  flex: 1;
+  background: linear-gradient(160deg, #c8d8ff 0%, #b8c8f8 20%, #d4b8f0 50%, #f0c8a0 80%, #f8d8b0 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f8faff;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-left::before {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  left: -60px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.login-left::after {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(200,180,255,0.4) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.login-left-inner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #2a2a5a;
+}
+
+.login-brand-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 4px 12px rgba(100,80,200,0.3));
+}
+
+.login-left-inner h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #2a2a5a;
+  margin-bottom: 0.5rem;
+}
+
+.login-left-inner p {
+  font-size: 1rem;
+  color: #4a4a7a;
+  margin-bottom: 0.3rem;
+}
+
+.login-tagline {
+  font-size: 0.9rem;
+  color: #6a6aaa;
+  font-style: italic;
+}
+
+/* ---- SAG ---- */
+.login-right {
+  width: 500px;
+  background: #f5f7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 2rem;
 }
 
 .login-card {
   width: 100%;
-  max-width: 400px;
+  max-width: 380px;
   background: white;
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 2.5rem 2rem;
-  box-shadow: 0 4px 32px rgba(26,86,219,0.1);
+  box-shadow: 0 8px 40px rgba(100,80,200,0.1);
 }
 
-.login-logo { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 2rem; }
-.login-logo img { width: 28px; height: 28px; }
-.login-logo span { font-size: 1rem; font-weight: 700; color: #1a56db; }
+.login-card-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+}
 
-.login-card h2 { font-size: 1.6rem; font-weight: 800; color: #1a1a2e; margin-bottom: 0.4rem; }
-.login-sub { color: #999; font-size: 0.88rem; margin-bottom: 2rem; }
+.logo-icon { font-size: 1.4rem; }
+.logo-text { font-size: 1rem; font-weight: 700; color: #1a56db; }
 
-.form-group { margin-bottom: 1.2rem; }
-.form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #444; margin-bottom: 0.4rem; }
+.login-card-sub {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #aaa;
+  margin-bottom: 1.5rem;
+}
 
-.input-wrap { position: relative; display: flex; align-items: center; }
-.input-icon { position: absolute; left: 0.9rem; font-size: 1rem; pointer-events: none; }
+.login-card h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.form-group { margin-bottom: 1.1rem; }
+
+.form-group label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 0.35rem;
+}
+
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-svg-icon {
+  position: absolute;
+  left: 0.9rem;
+  width: 16px;
+  height: 16px;
+  color: #aaa;
+  pointer-events: none;
+}
 
 .input-wrap input {
   width: 100%;
-  padding: 0.75rem 1rem 0.75rem 2.6rem;
-  border: 1.5px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 0.95rem;
+  padding: 0.75rem 3.5rem 0.75rem 2.5rem;
+  border: 1.5px solid #ececec;
+  border-radius: 50px;
+  font-size: 0.9rem;
   font-family: inherit;
+  background: #f9faff;
+  color: #333;
   transition: border-color 0.2s, box-shadow 0.2s;
-  background: #fafafa;
-  box-sizing: border-box;
 }
 
 .input-wrap input:focus {
@@ -186,55 +257,55 @@ export default {
 
 .has-error .input-wrap input { border-color: #e53e3e; background: #fff5f5; }
 
-.toggle-pass {
+.show-btn {
   position: absolute;
-  right: 0.8rem;
+  right: 1rem;
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #1a56db;
+  font-family: inherit;
   padding: 0;
 }
 
-.field-error { display: block; color: #e53e3e; font-size: 0.8rem; margin-top: 0.3rem; }
+.field-error { display: block; color: #e53e3e; font-size: 0.78rem; margin-top: 0.3rem; padding-left: 0.5rem; }
 
 .error-banner {
   background: #fff5f5;
   border: 1px solid #fed7d7;
   color: #c53030;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  font-size: 0.88rem;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border-radius: 50px;
+  font-size: 0.83rem;
+  margin-bottom: 0.8rem;
 }
 
 .login-btn {
   width: 100%;
-  padding: 0.9rem;
-  background: #1a56db;
+  padding: 0.85rem;
+  background: linear-gradient(90deg, #4a7cf8, #8b5cf6);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 50px;
+  font-size: 0.95rem;
   font-weight: 700;
+  letter-spacing: 1.5px;
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
-  margin-top: 0.5rem;
+  transition: opacity 0.2s, transform 0.15s;
+  margin-top: 0.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: inherit;
 }
 
-.login-btn:hover:not(:disabled) { background: #1447b8; transform: translateY(-1px); }
-.login-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+.login-btn:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+.login-btn:disabled { opacity: 0.65; cursor: not-allowed; }
 
 .spinner {
-  width: 18px;
-  height: 18px;
+  width: 18px; height: 18px;
   border: 2px solid rgba(255,255,255,0.4);
   border-top-color: white;
   border-radius: 50%;
@@ -244,21 +315,27 @@ export default {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.login-hint { margin-top: 1.8rem; padding-top: 1.2rem; border-top: 1px solid #eee; }
-.login-hint p { font-size: 0.78rem; color: #aaa; margin-bottom: 0.4rem; }
+.login-hint {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f0f0f0;
+  text-align: center;
+}
+
+.login-hint p { font-size: 0.75rem; color: #bbb; }
+
 .login-hint code {
-  display: inline-block;
   background: #f0f4ff;
   color: #1a56db;
-  font-size: 0.78rem;
-  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
   border-radius: 4px;
-  margin-right: 0.4rem;
-  margin-bottom: 0.3rem;
+  margin: 0 0.2rem;
 }
 
 @media (max-width: 768px) {
   .login-left { display: none; }
-  .login-right { width: 100%; }
+  .login-right { width: 100%; background: linear-gradient(160deg, #c8d8ff, #f0c8a0); }
+  .login-card { box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
 }
 </style>

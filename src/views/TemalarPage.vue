@@ -81,26 +81,15 @@ export default {
       selectedFakultet: null,
       selectedKurs: null,
       fakultetler: [
-        { id: 1, name: 'Kiberfizika', icon: '🤖' },
-        { id: 2, name: 'Innowasiýa Ykdysadyýeti', icon: '💡' },
-        { id: 3, name: 'Kompyuter Tehnologiýalary', icon: '💻' },
-        { id: 4, name: 'Himiýa we Nano', icon: '🧪' },
-        { id: 5, name: 'Biotehnologiýa', icon: '🧬' }
+        { id: 1, name: 'Kiberfiziki Ulgamlar Fakulteti', icon: '🤖' },
+        { id: 2, name: 'Innowasiýalaryň Ykdysadyýeti Fakulteti', icon: '💡' },
+        { id: 3, name: 'Kompýuter Ylymlary we Maglumat Tehnologiýalary Fakulteti', icon: '💻' },
+        { id: 4, name: 'Himiki we Nanotehnologiýalar Fakulteti', icon: '🧪' },
+        { id: 5, name: 'Biotehnologiýa we Ekologiýa Fakulteti', icon: '🧬' }
       ],
       kurslar: [1, 2, 3, 4],
       subjects: [
-        { id: 1,  fakultet: 2, kurs: 1, name: 'Fundamental of Marketing',  category: 'Biznes',       icon: '📊', description: 'Marketing esaslary we strategiýalary',              lessonCount: 28, difficulty: 'orta' },
-        { id: 2,  fakultet: 2, kurs: 1, name: 'Economics of Enterprise',    category: 'Ykdysadyýet',  icon: '🏢', description: 'Kärhana ykdysadyýeti we dolandyryş',              lessonCount: 32, difficulty: 'kyn'  },
-        { id: 3,  fakultet: 1, kurs: 1, name: 'Physical Education',         category: 'Sport',        icon: '⚽', description: 'Beden terbiýesi we sagdynlyk',                   lessonCount: 20, difficulty: 'ýeňil'},
-        { id: 4,  fakultet: 3, kurs: 1, name: 'Algebra',                    category: 'Matematika',   icon: '🔢', description: 'Algebranyň esasy düşünjeleri we deňlemeler',      lessonCount: 35, difficulty: 'orta' },
-        { id: 5,  fakultet: 3, kurs: 2, name: 'Linear Algebra',             category: 'Matematika',   icon: '📐', description: 'Çyzykly algebra we matrisalar',                   lessonCount: 30, difficulty: 'kyn'  },
-        { id: 6,  fakultet: 2, kurs: 2, name: 'Japanese',                   category: 'Diller',       icon: '🇯🇵', description: 'Ýapon dili we medeniýeti',                       lessonCount: 40, difficulty: 'kyn'  },
-        { id: 7,  fakultet: 2, kurs: 1, name: 'English Profession',         category: 'Diller',       icon: '🇬🇧', description: 'Hünär üçin iňlis dili',                          lessonCount: 38, difficulty: 'orta' },
-        { id: 8,  fakultet: 3, kurs: 1, name: 'Information',                category: 'Informatika',  icon: '💻', description: 'Maglumat tehnologiýalary esaslary',               lessonCount: 25, difficulty: 'ýeňil'},
-        { id: 9,  fakultet: 2, kurs: 2, name: 'Microeconomics',             category: 'Ykdysadyýet',  icon: '💰', description: 'Mikroykdysadyýet nazaryýeti',                     lessonCount: 30, difficulty: 'kyn'  },
-        { id: 10, fakultet: 1, kurs: 3, name: 'Scientific',                 category: 'Ylym',         icon: '🔬', description: 'Ylmy gözleg usullary',                           lessonCount: 22, difficulty: 'orta' },
-        { id: 11, fakultet: 1, kurs: 2, name: 'Engineering Pedagogic',      category: 'Inženerçilik', icon: '⚙️', description: 'Inženerçilik pedagogikasy',                      lessonCount: 26, difficulty: 'kyn'  },
-        { id: 12, fakultet: 3, kurs: 3, name: 'Mathematical Modeling',      category: 'Matematika',   icon: '📈', description: 'Matematiki modelirleme we simulýasiýa usullary',  lessonCount: 30, difficulty: 'kyn'  }
+        { id: 12, fakultet: 3, kurs: 3, name: 'Mathematical Modeling', category: 'Matematika', icon: '📈', description: 'Matematiki modelirleme we simulýasiýa usullary', lessonCount: 30, difficulty: 'kyn' }
       ]
     }
   },

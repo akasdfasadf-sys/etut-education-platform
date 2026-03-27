@@ -26,6 +26,11 @@
               frameborder="0"
             ></iframe>
             <p v-else class="no-pdf">PDF faýl heniz goşulmady.</p>
+            <div class="topic-test-btn-wrap">
+              <button class="topic-test-btn" @click="$router.push(`/test/${$route.params.id}`)">
+                📝 Bu dersiň testini geç
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -201,6 +206,27 @@ export default {
   font-size: 0.9rem;
   text-align: center;
 }
+
+.topic-test-btn-wrap {
+  padding: 1rem 1.2rem;
+  border-top: 1px solid #eee;
+  background: #f9fafb;
+}
+
+.topic-test-btn {
+  background: #1a56db;
+  color: white;
+  border: none;
+  padding: 0.65rem 1.5rem;
+  border-radius: 2px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.topic-test-btn:hover { background: #1d4ed8; }
 
 @media (max-width: 768px) {
   .page-hero { justify-content: center; }
